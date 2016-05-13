@@ -7,8 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "SecondViewController.h"
 
-@interface ViewController ()
+@interface ViewController ()<secondViewControllerDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (weak, nonatomic) IBOutlet UITextField *secTextField;
+@property (nonatomic,strong) SecondViewController *secVc;
 
 @end
 
@@ -16,7 +20,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    SecondViewController *secondVc = [[SecondViewController alloc] init];
+    [secondVc returnText:^(NSString *showText) {
+        NSLog(@"---------%@------------",showText);
+        self.secTextField.text = showText;
+    }];
+    self.secVc = secondVc;
+    self.secVc.delegate = self;
+}
+
+
+#pragma mark - secondViewControllerDelegate
+- (void)setTextfield:(NSString *)text{
+    self.textField.text = text;
+    NSLog(@"%@",text);
+}
+
+- (IBAction)gengxin:(id)sender {
+    [self presentViewController:self.secVc animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
